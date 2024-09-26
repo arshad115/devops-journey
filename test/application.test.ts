@@ -10,12 +10,6 @@ describe("GET /", () => {
     });
 
     it("should return Hello World!", async () => {
-        const response = await request(app).get("/");
-        if (response.status !== 200) {
-            throw new Error(`Expected status 200, but got ${response.status}`);
-        }
-        if (response.text !== "Hello World!") {
-            throw new Error(`Expected text "Hello World!", but got ${response.text}`);
-        }
+        const response = await request(app).get("/").expect(200).expect("Hello World!");
     });
 });
