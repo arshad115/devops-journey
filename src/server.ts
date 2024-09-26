@@ -1,4 +1,3 @@
-import express, { Request, Response } from 'express';
 import application from './application';
 
 const app = application();
