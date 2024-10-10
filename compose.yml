@@ -4,6 +4,8 @@ services:
   jenkins:
     image: jenkins/jenkins:lts
     container_name: jenkins
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "9090:8080"
       - "50000:50000"
