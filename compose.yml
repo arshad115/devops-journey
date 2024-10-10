@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    ports:
+      - "9090:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9091:9090"
+    volumes:
+      - ~/Developer/configs/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    depends_on:
+      - prometheus
+    ports:
+      - "9092:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+
+  sonarqube:
+    image: sonarqube
+    container_name: sonarqube
+    ports:
+      - "9093:9000"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_logs:/opt/sonarqube/logs
+      - sonarqube_extensions:/opt/sonarqube/extensions
+
+volumes:
+  jenkins_home:
+  prometheus_data:
+  grafana_data:
+  sonarqube_data:
+  sonarqube_logs:
+  sonarqube_extensions:
