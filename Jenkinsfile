@@ -6,13 +6,8 @@ pipeline {
         kind: Pod
         spec:
           containers:
-          - name: maven
-            image: maven:alpine
-            command:
-            - cat
-            tty: true
           - name: node
-            image: node:16-alpine3.12
+            image: node:22-alpine3.19
             command:
             - cat
             tty: true
@@ -20,17 +15,12 @@ pipeline {
     }
   }
   stages {
-    stage('Run maven') {
+    stage('Run Tests') {
       steps {
-        container('maven') {
-          sh 'mvn -version'
-          sh ' echo Hello World > hello.txt'
-          sh 'ls -last'
-        }
         container('node') {
-          sh 'npm version'
-          sh 'cat hello.txt'
-          sh 'ls -last'
+          sh 'npm ci'
+          sh 'npm run build --if-present'
+          sh 'npm run test'
         }
       }
     }
